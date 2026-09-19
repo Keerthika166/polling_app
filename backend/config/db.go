@@ -2,17 +2,26 @@ package config
 
 import (
 	"context"
+	"errors"
 	"log"
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+	"go.mongodb.org/mongo-driver/mongo/readpref"
 )
 
 type Database struct {
 	Client *mongo.Client
 	DB     *mongo.Database
+}
+
+func (d *Database) Ping(ctx context.Context) error {
+	if d == nil || d.Client == nil {
+		return errors.New("database not connected")
+	}
+	return d.Client.Ping(ctx, readpref.Nearest())
 }
 
 func ConnectMongoDB(cfg *Config) (*Database, error) {
@@ -26,8 +35,8 @@ func ConnectMongoDB(cfg *Config) (*Database, error) {
 		return nil, err
 	}
 
-	// Ping database
-	if err := client.Ping(ctx, nil); err != nil {
+	// Ping database with nearest preference for replica clusters
+	if err := client.Ping(ctx, readpref.Nearest()); err != nil {
 		log.Printf("[MongoDB] Ping failed: %v", err)
 		return nil, err
 	}

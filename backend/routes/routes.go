@@ -3,6 +3,7 @@ package routes
 import (
 	"time"
 
+	"live-polling-backend/config"
 	"live-polling-backend/controllers"
 	"live-polling-backend/middleware"
 	"live-polling-backend/services"
@@ -16,14 +17,14 @@ func SetupRoutes(
 	pollCtrl *controllers.PollController,
 	authService *services.AuthService,
 	redisService *services.RedisService,
+	dbInstance *config.Database,
 ) {
 	api := router.Group("/api")
 
-	// Comprehensive Health check verifying Redis connectivity
+	// Comprehensive Health check verifying both MongoDB and Redis connectivity
 	api.GET("/health", func(c *gin.Context) {
 		redisConnected := false
 		redisLatency := "N/A"
-
 		if redisService != nil && redisService.HasLiveClient() {
 			start := time.Now()
 			pong, err := redisService.Ping(c.Request.Context())
@@ -33,15 +34,33 @@ func SetupRoutes(
 			}
 		}
 
+		mongoConnected := false
+		mongoLatency := "N/A"
+		if dbInstance != nil {
+			start := time.Now()
+			if err := dbInstance.Ping(c.Request.Context()); err == nil {
+				mongoConnected = true
+				mongoLatency = time.Since(start).String()
+			}
+		}
+
 		c.JSON(200, gin.H{
 			"status":  "ok",
 			"service": "PulsePoll API",
 			"version": "1.0.0",
-			"redis": gin.H{
-				"connected": redisConnected,
-				"status":    func() string { if redisConnected { return "connected" }; return "offline" }(),
-				"ping":      redisLatency,
-				"features":  []string{"Atomic HINCRBY Vote Counts", "Pub/Sub Live Broadcast", "O(1) Hash Tallies"},
+			"databases": gin.H{
+				"redis": gin.H{
+					"connected": redisConnected,
+					"status":    func() string { if redisConnected { return "connected" }; return "offline" }(),
+					"ping":      redisLatency,
+					"role":      "Atomic HINCRBY Vote Counts & Pub/Sub Live WebSocket Broadcast",
+				},
+				"mongodb": gin.H{
+					"connected": mongoConnected,
+					"status":    func() string { if mongoConnected { return "connected" }; return "in-memory fallback" }(),
+					"ping":      mongoLatency,
+					"role":      "Persistent Storage (Users, Polls, Audit Votes)",
+				},
 			},
 		})
 	})
