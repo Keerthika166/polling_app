@@ -70,12 +70,12 @@ export default function PublicPoll({ shareCode, navigate }) {
     try {
       await api.polls.vote(pollId, selectedOptionId);
 
-      // Trigger celebratory confetti
+      // Trigger celebratory confetti with fresh light ocean/emerald colors (no violet!)
       confetti({
         particleCount: 80,
         spread: 70,
         origin: { y: 0.6 },
-        colors: ['#3b82f6', '#8b5cf6', '#10b981', '#f59e0b'],
+        colors: ['#2563eb', '#0284c7', '#059669', '#10b981', '#f59e0b'],
       });
 
       toast.success('Your vote has been recorded!');
@@ -122,8 +122,8 @@ export default function PublicPoll({ shareCode, navigate }) {
     return (
       <div className="app-container" style={{ maxWidth: '540px', marginTop: '60px' }}>
         <div className="glass-panel" style={{ padding: '36px', textAlign: 'center' }}>
-          <AlertCircle size={44} color="#f43f5e" style={{ margin: '0 auto 16px' }} />
-          <h2 style={{ marginBottom: '10px' }}>Poll Unavailable</h2>
+          <AlertCircle size={44} color="#e11d48" style={{ margin: '0 auto 16px' }} />
+          <h2 style={{ marginBottom: '10px', color: 'var(--text-primary)' }}>Poll Unavailable</h2>
           <p style={{ color: 'var(--text-secondary)', marginBottom: '24px' }}>
             {error || 'This poll does not exist or the link may have expired.'}
           </p>
@@ -152,9 +152,9 @@ export default function PublicPoll({ shareCode, navigate }) {
                   borderRadius: '9999px',
                   fontSize: '0.75rem',
                   fontWeight: 700,
-                  background: 'rgba(244, 63, 94, 0.15)',
-                  color: '#fb7185',
-                  border: '1px solid rgba(244, 63, 94, 0.3)',
+                  background: '#fff1f2',
+                  color: '#e11d48',
+                  border: '1px solid #fecdd3',
                   textTransform: 'uppercase',
                 }}
               >
@@ -168,13 +168,13 @@ export default function PublicPoll({ shareCode, navigate }) {
             className="btn btn-sm btn-secondary"
             title="Share this poll"
           >
-            {copied ? <Check size={14} color="#10b981" /> : <Share2 size={14} />}
+            {copied ? <Check size={14} color="#059669" /> : <Share2 size={14} />}
             <span>{copied ? 'Copied' : 'Share'}</span>
           </button>
         </div>
 
         {/* Question Title */}
-        <h1 style={{ fontSize: '1.75rem', lineHeight: '1.35', marginBottom: '12px' }}>
+        <h1 style={{ fontSize: '1.75rem', lineHeight: '1.35', marginBottom: '12px', color: 'var(--text-primary)' }}>
           {poll.question}
         </h1>
 
@@ -204,9 +204,9 @@ export default function PublicPoll({ shareCode, navigate }) {
             style={{
               padding: '12px 16px',
               borderRadius: 'var(--radius-md)',
-              background: 'rgba(244, 63, 94, 0.12)',
-              border: '1px solid rgba(244, 63, 94, 0.3)',
-              color: '#fb7185',
+              background: '#fff1f2',
+              border: '1px solid #fecdd3',
+              color: '#e11d48',
               fontSize: '0.875rem',
               marginBottom: '20px',
             }}
@@ -242,10 +242,11 @@ export default function PublicPoll({ shareCode, navigate }) {
                       style={{
                         fontSize: '0.8rem',
                         fontWeight: 700,
-                        color: 'var(--text-muted)',
+                        color: 'var(--text-secondary)',
                         padding: '2px 8px',
                         borderRadius: '4px',
-                        background: 'rgba(255, 255, 255, 0.04)',
+                        background: '#f1f5f9',
+                        border: '1px solid #e2e8f0',
                       }}
                     >
                       {String.fromCharCode(65 + idx)}
@@ -274,9 +275,9 @@ export default function PublicPoll({ shareCode, navigate }) {
                 gap: '10px',
                 padding: '12px 16px',
                 borderRadius: 'var(--radius-md)',
-                background: isClosed ? 'rgba(244, 63, 94, 0.08)' : 'rgba(16, 185, 129, 0.1)',
-                border: `1px solid ${isClosed ? 'rgba(244, 63, 94, 0.25)' : 'rgba(16, 185, 129, 0.25)'}`,
-                color: isClosed ? '#fb7185' : '#34d399',
+                background: isClosed ? '#fff1f2' : '#ecfdf5',
+                border: `1px solid ${isClosed ? '#fecdd3' : '#a7f3d0'}`,
+                color: isClosed ? '#9f1239' : '#065f46',
                 fontSize: '0.9rem',
                 marginBottom: '24px',
               }}
@@ -313,6 +314,7 @@ export default function PublicPoll({ shareCode, navigate }) {
                           padding: '2px 8px',
                           borderRadius: '10px',
                           fontWeight: 700,
+                          boxShadow: '0 2px 6px rgba(37, 99, 235, 0.25)',
                         }}
                       >
                         Your Choice

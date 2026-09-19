@@ -66,7 +66,6 @@ export default function CreatePoll({ navigate }) {
       });
 
       toast.success('Poll created successfully!');
-      // Navigate to live results or dashboard
       if (data.poll && (data.poll.id || data.poll._id)) {
         navigate(`/poll/${data.poll.id || data.poll._id}/results`);
       } else {
@@ -103,7 +102,9 @@ export default function CreatePoll({ navigate }) {
     <div className="app-container" style={{ maxWidth: '780px' }}>
       <div className="glass-panel" style={{ padding: '36px' }}>
         <div style={{ marginBottom: '28px' }}>
-          <h1 style={{ fontSize: '1.8rem', marginBottom: '8px' }}>Create a New Live Poll</h1>
+          <h1 style={{ fontSize: '1.8rem', marginBottom: '8px', color: 'var(--text-primary)' }}>
+            Create a New Live Poll
+          </h1>
           <p style={{ color: 'var(--text-secondary)' }}>
             Formulate your question, add choices, and share the live link with your audience.
           </p>
@@ -112,7 +113,7 @@ export default function CreatePoll({ navigate }) {
         {/* Quick Template Presets */}
         <div style={{ marginBottom: '24px' }}>
           <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '6px' }}>
-            <Sparkles size={14} color="#8b5cf6" />
+            <Sparkles size={14} color="#0284c7" />
             <span>QUICK TEMPLATES</span>
           </div>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
@@ -135,9 +136,9 @@ export default function CreatePoll({ navigate }) {
             style={{
               padding: '12px 16px',
               borderRadius: 'var(--radius-md)',
-              background: 'rgba(244, 63, 94, 0.12)',
-              border: '1px solid rgba(244, 63, 94, 0.3)',
-              color: '#fb7185',
+              background: '#fff1f2',
+              border: '1px solid #fecdd3',
+              color: '#e11d48',
               fontSize: '0.875rem',
               marginBottom: '24px',
             }}
@@ -182,7 +183,8 @@ export default function CreatePoll({ navigate }) {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    background: 'rgba(255, 255, 255, 0.05)',
+                    background: '#f1f5f9',
+                    border: '1px solid #e2e8f0',
                     borderRadius: 'var(--radius-md)',
                     fontWeight: 700,
                     fontSize: '0.85rem',

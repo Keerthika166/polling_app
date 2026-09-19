@@ -90,7 +90,7 @@ export default function Dashboard({ navigate }) {
         }}
       >
         <div>
-          <h1 style={{ fontSize: '2rem', marginBottom: '6px' }}>
+          <h1 style={{ fontSize: '2rem', marginBottom: '6px', color: 'var(--text-primary)' }}>
             Welcome back, {user?.name?.split(' ')[0] || 'Creator'} 👋
           </h1>
           <p style={{ color: 'var(--text-secondary)' }}>
@@ -138,7 +138,7 @@ export default function Dashboard({ navigate }) {
           <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '8px' }}>
             Total Audience Votes
           </div>
-          <div style={{ fontSize: '2rem', fontWeight: 800, color: 'var(--accent-purple)' }}>
+          <div style={{ fontSize: '2rem', fontWeight: 800, color: 'var(--accent-cyan)' }}>
             {totalVotesAcrossAll}
           </div>
         </div>

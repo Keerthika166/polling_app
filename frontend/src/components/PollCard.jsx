@@ -28,7 +28,9 @@ export default function PollCard({ poll, onStatusChange, onDelete, navigate }) {
   return (
     <div className="glass-panel" style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '12px' }}>
-        <h3 style={{ fontSize: '1.2rem', lineHeight: '1.4', flex: 1 }}>{poll.question}</h3>
+        <h3 style={{ fontSize: '1.2rem', lineHeight: '1.4', flex: 1, color: 'var(--text-primary)' }}>
+          {poll.question}
+        </h3>
         <span
           className={!isClosed ? 'live-badge' : ''}
           style={
@@ -38,9 +40,9 @@ export default function PollCard({ poll, onStatusChange, onDelete, navigate }) {
                   borderRadius: '9999px',
                   fontSize: '0.75rem',
                   fontWeight: 700,
-                  background: 'rgba(244, 63, 94, 0.12)',
-                  color: '#fb7185',
-                  border: '1px solid rgba(244, 63, 94, 0.3)',
+                  background: '#fff1f2',
+                  color: '#e11d48',
+                  border: '1px solid #fecdd3',
                   textTransform: 'uppercase',
                 }
               : {}
@@ -72,11 +74,13 @@ export default function PollCard({ poll, onStatusChange, onDelete, navigate }) {
           <span style={{ color: 'var(--text-muted)' }}>Code:</span>
           <code
             style={{
-              background: 'rgba(255, 255, 255, 0.05)',
-              padding: '2px 6px',
+              background: '#f1f5f9',
+              padding: '2px 8px',
               borderRadius: '4px',
               fontFamily: 'JetBrains Mono',
-              color: 'var(--accent-cyan)',
+              color: 'var(--accent-blue)',
+              fontWeight: 600,
+              border: '1px solid #e2e8f0',
             }}
           >
             {poll.shareCode}
@@ -115,7 +119,7 @@ export default function PollCard({ poll, onStatusChange, onDelete, navigate }) {
           className="btn btn-sm btn-secondary"
           title="Copy direct share link"
         >
-          {copied ? <Check size={15} color="#10b981" /> : <Share2 size={15} />}
+          {copied ? <Check size={15} color="#059669" /> : <Share2 size={15} />}
           <span>{copied ? 'Copied' : 'Share Link'}</span>
         </button>
 

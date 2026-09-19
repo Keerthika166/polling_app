@@ -80,7 +80,7 @@ export default function PollResults({ pollId, navigate }) {
     return (
       <div className="app-container" style={{ maxWidth: '540px', marginTop: '60px' }}>
         <div className="glass-panel" style={{ padding: '36px', textAlign: 'center' }}>
-          <h2 style={{ marginBottom: '10px' }}>Results Unavailable</h2>
+          <h2 style={{ marginBottom: '10px', color: 'var(--text-primary)' }}>Results Unavailable</h2>
           <p style={{ color: 'var(--text-secondary)', marginBottom: '24px' }}>
             {error || 'Unable to find this poll.'}
           </p>
@@ -148,9 +148,9 @@ export default function PollResults({ pollId, navigate }) {
                   borderRadius: '9999px',
                   fontSize: '0.75rem',
                   fontWeight: 700,
-                  background: 'rgba(244, 63, 94, 0.15)',
-                  color: '#fb7185',
-                  border: '1px solid rgba(244, 63, 94, 0.3)',
+                  background: '#fff1f2',
+                  color: '#e11d48',
+                  border: '1px solid #fecdd3',
                   textTransform: 'uppercase',
                 }}
               >
@@ -163,7 +163,7 @@ export default function PollResults({ pollId, navigate }) {
             <button
               onClick={handleClosePoll}
               className="btn btn-sm btn-secondary"
-              style={{ color: '#fb7185' }}
+              style={{ color: '#e11d48' }}
             >
               <PowerOff size={14} />
               <span>Close Poll</span>
@@ -172,7 +172,7 @@ export default function PollResults({ pollId, navigate }) {
         </div>
 
         {/* Question Title */}
-        <h1 style={{ fontSize: '2rem', lineHeight: '1.3', marginBottom: '20px' }}>
+        <h1 style={{ fontSize: '2rem', lineHeight: '1.3', marginBottom: '20px', color: 'var(--text-primary)' }}>
           {poll.question}
         </h1>
 
@@ -183,7 +183,7 @@ export default function PollResults({ pollId, navigate }) {
             alignItems: 'center',
             gap: '20px',
             padding: '16px 20px',
-            background: 'var(--bg-surface-elevated)',
+            background: '#f8fafc',
             borderRadius: 'var(--radius-md)',
             border: '1px solid var(--border-subtle)',
             marginBottom: '32px',
@@ -211,12 +211,13 @@ export default function PollResults({ pollId, navigate }) {
             <span>Audience Code:</span>
             <code
               style={{
-                background: 'rgba(255, 255, 255, 0.08)',
+                background: '#eff6ff',
                 padding: '3px 8px',
                 borderRadius: '4px',
                 fontFamily: 'JetBrains Mono',
                 fontWeight: 600,
-                color: 'var(--accent-cyan)',
+                color: 'var(--accent-blue)',
+                border: '1px solid #bfdbfe',
               }}
             >
               {poll.shareCode}
@@ -262,7 +263,7 @@ export default function PollResults({ pollId, navigate }) {
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-            <Radio size={14} color="#10b981" />
+            <Radio size={14} color="#059669" />
             <span>Streaming live vote changes via Redis Pub/Sub &amp; WebSockets</span>
           </div>
 

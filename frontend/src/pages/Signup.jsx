@@ -48,17 +48,19 @@ export default function Signup({ navigate }) {
               width: '52px',
               height: '52px',
               borderRadius: '14px',
-              background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(6, 182, 212, 0.2) 100%)',
-              border: '1px solid rgba(16, 185, 129, 0.3)',
+              background: 'linear-gradient(135deg, rgba(5, 150, 105, 0.1) 0%, rgba(2, 132, 199, 0.1) 100%)',
+              border: '1px solid #a7f3d0',
               display: 'inline-flex',
               alignItems: 'center',
               justifyContent: 'center',
               marginBottom: '16px',
             }}
           >
-            <UserPlus size={26} color="#10b981" />
+            <UserPlus size={26} color="#059669" />
           </div>
-          <h2 style={{ fontSize: '1.6rem', marginBottom: '6px' }}>Create an Account</h2>
+          <h2 style={{ fontSize: '1.6rem', marginBottom: '6px', color: 'var(--text-primary)' }}>
+            Create an Account
+          </h2>
           <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
             Start running interactive live polls in minutes.
           </p>
@@ -69,9 +71,9 @@ export default function Signup({ navigate }) {
             style={{
               padding: '12px 16px',
               borderRadius: 'var(--radius-md)',
-              background: 'rgba(244, 63, 94, 0.12)',
-              border: '1px solid rgba(244, 63, 94, 0.3)',
-              color: '#fb7185',
+              background: '#fff1f2',
+              border: '1px solid #fecdd3',
+              color: '#e11d48',
               fontSize: '0.875rem',
               marginBottom: '20px',
             }}

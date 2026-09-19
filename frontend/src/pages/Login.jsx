@@ -47,17 +47,19 @@ export default function Login({ navigate }) {
               width: '52px',
               height: '52px',
               borderRadius: '14px',
-              background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%)',
-              border: '1px solid rgba(59, 130, 246, 0.3)',
+              background: 'linear-gradient(135deg, rgba(37, 99, 235, 0.1) 0%, rgba(2, 132, 199, 0.15) 100%)',
+              border: '1px solid #bfdbfe',
               display: 'inline-flex',
               alignItems: 'center',
               justifyContent: 'center',
               marginBottom: '16px',
             }}
           >
-            <LogIn size={26} color="#3b82f6" />
+            <LogIn size={26} color="#2563eb" />
           </div>
-          <h2 style={{ fontSize: '1.6rem', marginBottom: '6px' }}>Sign in to PulsePoll</h2>
+          <h2 style={{ fontSize: '1.6rem', marginBottom: '6px', color: 'var(--text-primary)' }}>
+            Sign in to PulsePoll
+          </h2>
           <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
             Create, manage, and broadcast your live audience polls.
           </p>
@@ -68,9 +70,9 @@ export default function Login({ navigate }) {
             style={{
               padding: '12px 16px',
               borderRadius: 'var(--radius-md)',
-              background: 'rgba(244, 63, 94, 0.12)',
-              border: '1px solid rgba(244, 63, 94, 0.3)',
-              color: '#fb7185',
+              background: '#fff1f2',
+              border: '1px solid #fecdd3',
+              color: '#e11d48',
               fontSize: '0.875rem',
               marginBottom: '20px',
             }}
@@ -140,7 +142,7 @@ export default function Login({ navigate }) {
             className="btn btn-sm btn-secondary"
             style={{ width: '100%', borderStyle: 'dashed' }}
           >
-            <Sparkles size={14} color="#8b5cf6" />
+            <Sparkles size={14} color="#0284c7" />
             <span>Fill Demo Credentials</span>
           </button>
         </div>

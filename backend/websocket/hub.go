@@ -36,7 +36,7 @@ func (h *Hub) Run() {
 			if _, exists := h.rooms[client.PollID]; !exists {
 				h.rooms[client.PollID] = make(map[*Client]bool)
 				// Start listening to Redis Pub/Sub for this poll
-				h.startRedisSubscription(client.PollID)
+				h.startSubscription(client.PollID)
 			}
 			h.rooms[client.PollID][client] = true
 			log.Printf("[WebSocket Hub] Client joined poll room: %s (Total in room: %d)", client.PollID, len(h.rooms[client.PollID]))
@@ -52,11 +52,11 @@ func (h *Hub) Run() {
 				}
 				if len(clients) == 0 {
 					delete(h.rooms, client.PollID)
-					// Cancel Redis subscription if no clients left
+					// Cancel subscription if no clients left
 					if cancel, hasSub := h.subscribers[client.PollID]; hasSub {
 						cancel()
 						delete(h.subscribers, client.PollID)
-						log.Printf("[WebSocket Hub] Stopped Redis subscription for idle poll room: %s", client.PollID)
+						log.Printf("[WebSocket Hub] Stopped subscription for idle poll room: %s", client.PollID)
 					}
 				}
 			}
@@ -65,7 +65,7 @@ func (h *Hub) Run() {
 	}
 }
 
-func (h *Hub) startRedisSubscription(pollID string) {
+func (h *Hub) startSubscription(pollID string) {
 	if h.redisService == nil {
 		return
 	}
@@ -76,29 +76,52 @@ func (h *Hub) startRedisSubscription(pollID string) {
 	ctx, cancel := context.WithCancel(context.Background())
 	h.subscribers[pollID] = cancel
 
-	go func(pID string, subCtx context.Context) {
-		pubsub := h.redisService.Subscribe(subCtx, pID)
-		if pubsub == nil {
-			return
-		}
-		defer pubsub.Close()
-
-		ch := pubsub.Channel()
-		log.Printf("[WebSocket Hub] Listening to Redis Pub/Sub messages for poll: %s", pID)
-
-		for {
-			select {
-			case <-subCtx.Done():
+	if h.redisService.HasLiveClient() {
+		// Real Redis Pub/Sub subscription
+		go func(pID string, subCtx context.Context) {
+			pubsub := h.redisService.Subscribe(subCtx, pID)
+			if pubsub == nil {
 				return
-			case msg, ok := <-ch:
-				if !ok {
-					return
-				}
-				// Broadcast payload to all clients connected to this poll
-				h.BroadcastToRoom(pID, []byte(msg.Payload))
 			}
-		}
-	}(pollID, ctx)
+			defer pubsub.Close()
+
+			ch := pubsub.Channel()
+			log.Printf("[WebSocket Hub] Listening to Redis Pub/Sub messages for poll: %s", pID)
+
+			for {
+				select {
+				case <-subCtx.Done():
+					return
+				case msg, ok := <-ch:
+					if !ok {
+						return
+					}
+					h.BroadcastToRoom(pID, []byte(msg.Payload))
+				}
+			}
+		}(pollID, ctx)
+	} else {
+		// In-memory subscription fallback
+		fallbackCh := make(chan []byte, 64)
+		unsubscribe := h.redisService.SubscribeFallback(pollID, fallbackCh)
+
+		go func(pID string, subCtx context.Context) {
+			defer unsubscribe()
+			log.Printf("[WebSocket Hub] Listening to in-memory events for poll: %s", pID)
+
+			for {
+				select {
+				case <-subCtx.Done():
+					return
+				case msg, ok := <-fallbackCh:
+					if !ok {
+						return
+					}
+					h.BroadcastToRoom(pID, msg)
+				}
+			}
+		}(pollID, ctx)
+	}
 }
 
 func (h *Hub) BroadcastToRoom(pollID string, message []byte) {
