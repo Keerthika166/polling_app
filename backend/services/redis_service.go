@@ -32,6 +32,14 @@ func (s *RedisService) HasLiveClient() bool {
 	return s.client != nil
 }
 
+// Ping tests live connection to Redis server
+func (s *RedisService) Ping(ctx context.Context) (string, error) {
+	if s.client == nil {
+		return "", fmt.Errorf("redis client is not initialized")
+	}
+	return s.client.Ping(ctx).Result()
+}
+
 func (s *RedisService) voteKey(pollID string) string {
 	return fmt.Sprintf("poll:%s:votes", pollID)
 }

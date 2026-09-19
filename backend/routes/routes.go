@@ -1,6 +1,8 @@
 package routes
 
 import (
+	"time"
+
 	"live-polling-backend/controllers"
 	"live-polling-backend/middleware"
 	"live-polling-backend/services"
@@ -13,15 +15,34 @@ func SetupRoutes(
 	authCtrl *controllers.AuthController,
 	pollCtrl *controllers.PollController,
 	authService *services.AuthService,
+	redisService *services.RedisService,
 ) {
 	api := router.Group("/api")
 
-	// Health check
+	// Comprehensive Health check verifying Redis connectivity
 	api.GET("/health", func(c *gin.Context) {
+		redisConnected := false
+		redisLatency := "N/A"
+
+		if redisService != nil && redisService.HasLiveClient() {
+			start := time.Now()
+			pong, err := redisService.Ping(c.Request.Context())
+			if err == nil && pong == "PONG" {
+				redisConnected = true
+				redisLatency = time.Since(start).String()
+			}
+		}
+
 		c.JSON(200, gin.H{
 			"status":  "ok",
 			"service": "PulsePoll API",
 			"version": "1.0.0",
+			"redis": gin.H{
+				"connected": redisConnected,
+				"status":    func() string { if redisConnected { return "connected" }; return "offline" }(),
+				"ping":      redisLatency,
+				"features":  []string{"Atomic HINCRBY Vote Counts", "Pub/Sub Live Broadcast", "O(1) Hash Tallies"},
+			},
 		})
 	})
 

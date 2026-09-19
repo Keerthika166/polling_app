@@ -16,10 +16,14 @@ export default function Navbar({ currentPath, navigate }) {
           }}
           className="brand-logo"
         >
-          <BarChart3 size={24} color="#3b82f6" />
+          <BarChart3 size={24} color="#2563eb" />
           <span>PulsePoll</span>
-          <span className="live-badge" style={{ fontSize: '0.65rem', padding: '2px 8px' }}>
-            <span className="pulse-dot"></span> LIVE
+          <span
+            className="live-badge"
+            title="Redis In-Memory Counters & Pub/Sub WebSocket Engine Active"
+            style={{ fontSize: '0.68rem', padding: '2px 8px', display: 'inline-flex', alignItems: 'center', gap: '5px' }}
+          >
+            <span className="pulse-dot"></span> REDIS LIVE
           </span>
         </a>
 
