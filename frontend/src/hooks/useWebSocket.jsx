@@ -21,10 +21,16 @@ export function useWebSocket(pollId, initialData = null) {
   const connect = useCallback(() => {
     if (!pollId) return;
 
-    const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:8080';
-    const wsProto = apiBase.startsWith('https') ? 'wss' : 'ws';
-    const cleanHost = apiBase.replace(/^https?:\/\//, '').replace(/\/api\/?$/, '');
-    const wsUrl = `${wsProto}://${cleanHost}/api/polls/${pollId}/live`;
+    const apiBase = import.meta.env.VITE_API_URL || '';
+    let wsUrl;
+    if (apiBase.startsWith('http')) {
+      const wsProto = apiBase.startsWith('https') ? 'wss' : 'ws';
+      const cleanHost = apiBase.replace(/^https?:\/\//, '').replace(/\/api\/?$/, '');
+      wsUrl = `${wsProto}://${cleanHost}/api/polls/${pollId}/live`;
+    } else {
+      const wsProto = window.location.protocol === 'https:' ? 'wss' : 'ws';
+      wsUrl = `${wsProto}://${window.location.host}/api/polls/${pollId}/live`;
+    }
 
     console.log(`[WebSocket] Connecting to ${wsUrl}`);
     const socket = new WebSocket(wsUrl);
@@ -60,7 +66,6 @@ export function useWebSocket(pollId, initialData = null) {
     socket.onclose = (event) => {
       console.warn(`[WebSocket] Disconnected code=${event.code}, reason=${event.reason}`);
       setIsConnected(false);
-      // Try reconnecting in 2.5s if not cleanly unmounted
       reconnectTimeoutRef.current = setTimeout(() => {
         connect();
       }, 2500);
