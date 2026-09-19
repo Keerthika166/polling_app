@@ -15,7 +15,7 @@ build/
 *.dll
 *.so
 *.dylib
-server
+/server
 /backend/server
 
 # Logs
